@@ -1,0 +1,31 @@
+elif - if else statment
+= assign operator
+== equal operator
+www.w3schools.com
+
+#we need to check if that string contains letters or numbers
+isnumeric()= true or false
+a=x.isnumeric()
+#checking whether x contains numerical value or not
+a=true
+
+upper()
+to convert to upper case letter
+
+isupper() 
+to chech whether the letter is upper or lower
+output will be either true or false
+
+problem??
+#
+##
+###
+####
+#####
+using for loop
+
+WHILE
+based on a condition the loop wrks
+when the condition becomes false the loop stops
+
+

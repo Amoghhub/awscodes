@@ -1,0 +1,1089 @@
+AWS SOLUTIONS ARCHITECT ASSOCIATE
+
+1. IAM - IDENTITY AND ACCESS MANAGEMENT 
+
+what is iam >> authen and autheri of entities
+-users
+-roles
+-policies
+-policy attacthment
+
+CLI-Using Command line interface to run services in linux.
+installed v2
+copy from google and paste in cmd
+then aws version
+
+AWS CONFIGURATION
+Manage access keys get access key and secret access key for root. download the file
+now give access key
+secret access key
+region name
+output format 
+done.
+
+USER CREATION
+Creating iam user
+// C:\Users\advai>aws iam create-user --user-name amogh2
+done.
+
+LOGIN PROFILE
+user doesnt have an login credentials
+so we wnat to crete login crediateials
+using command createn login-profile >> username name >> password password
+
+// C:\Users\advai>aws iam  create-login-profile --user-name amogh --password test@1234
+a user with username amogh and pw test@1234
+done.
+
+MULTIFACTOR AUTHENTICATION:
+otp eye scans etc 
+
+POLICY CREATION
+attach user policy usernm policy arn and paste the arn of policy
+iam user doesnt have admin access then he have to take sts access policy to assume the role provided to switch role 
+otherwisw error will come
+
+policy attctmet via cli
+policy attatcmmet google copy link and paste in cli
+we can either crete user via cli or direcct console
+
+polices and roles
+identity proiders - identity provider id punch details active directory
+access analyzer - monitoring purposr
+
+// C:\Users\advai>aws iam create access-key --user-name name > C:\Users\advai\Downloads\filename we wanted
+
+// C:\Users\advai>aws iam create-login-profile --usrnme name passwoor >> C:\Users\advai\Downloads\filename we wanted
+>> aws iam list-users
+>> aws iam delete-policy
+>> will add to existing 
+>> replace the existing
+>> aws iam help
+
+
+2. KMS- KEY MANAGEMENT SERVICE
+
+-encry and decryp data using keys
+-aws auto gen keys nd custom keys that we create
+-we can create keys and attatch it to the file
+
+
+3. S3 - SIMPLE STORAGE SERVICE
+
+***OBJECT STORAGE
+>> unlimited scalabilty
+>> max 100 buckets
+
+VERSIONING
+method to protect our data
+to retrive the obej that have been del copy is already  versioned
+if we overwrite naything then tht old and new will be safe and save for bsckup
+
+OBJECT LOCK
+
+locking the data inside bucket
+inoder to use obj lock versioning should enable
+obj lock only wrok with versioned buckets
+create buvket > adva settings > obj lock
+then in that bucket>>obj lock
+
+obj lock is of two modes:
+
+1. GOVERNANCE MODE
+users with spec iam permissons can overweite or del the protected files during the retention period
+
+2. COMPLIANCE MODE
+no users can overwite or del the protceted object
+
+go to object > obj retention mode > enable 
+-then if we go with governance mode then the root can del the obj using spcl permissons
+-in compliance mode we can del the obj but we cant perman del the obj cuz in comp mode even root have no permissons to modify
+
+S3 DATA ENCRYPTION
+
+encry = algrithm + key
+s3 provie two types of encryption
+
+1.sse s3
+2.sse kms
+sse servr sde encryption
+cse client side encry
+s3 only supprots sse
+
+in objects > edit default encry
+for the encry of the s3 buckets always choose sse-kms cuz its gng to reduce the cost
+of encry upto 99%.
+the cost of using sse s3 is high
+
+sse kms- is a a bucket level key having the capability to generate object keys or the dsata keys by itself
+when using sse kms a key is first generated then it will generate for other obj keys no need to call s3 therby reducing the traffic and cost.
+then choose kms then choose aws or custom from kms sevivce 
+in aws the aws automaticlly choose a kms symmetric key for encry
+and if we use custom we cane choose the key whoch we can configure as our own.
+
+STATIC WEBSITE HOSTING IN S3
+
+The buckets are private and we have to make public to host.
+
+the bucket is having public access in 2 ways:
+-either we can use acl access control list
+-access point policies
+
+>> Block public access to avoid chances of threat and make everyting private.
+>> giving public access using acl
+
+obj >> perms >> tick close the lst 2 >> obj ownership >> acl enable >> obj >> actions>>make public
+then we can access it using the obj url
+
+>> making an obj public using access point policies
+
+s3 bucket policy is one of trhe resource based policy
+obj >> permi >> tick close the first two >> edit bucket poilcy >> aws policy generator >> copy the gen json sropt polivy and paste in edit bucket policy
+done.
+in poicy geneartor in priciple we need to enter the arn of the iam users tht we want to give this particular permssion
+arn1,arn2,arn3.....etc
+or we can use * to make public 
+get object >> viewing and dwonlaod the object
+and any actions related to obj we use obj arn and any actions rel to bucket we use bucket arn
+
+HOSTING
+
+1.go to freecss site download the website template save download the files
+then in that there uis 4 chrome files 
+index.html is there download it.
+
+2.add that folders and index.html files and make everything public
+for that permissions block mattuka ellam
+and enable acl then make the fies make public.
+
+3.then go to bucket prpperties
+static website host > enable 
+copy the link and paste it.
+done.
+
+In this evrything is public and chances of threta is very much so for avoid that we use another s3 stoare servce called CDN .
+GOTO CDN SERVICE.
+
+LCM - LIFE CYCLE MANAGEMENT
+
+>> Lifecycle configuration: it is a set of rules that define actions
+amaozin s3 applies to a grp of objts. you can either transition to another stoarge or del expired objts. 
+there are cost assosciated wth lifecycle tranitsion requests. 
+lifecycle expiration costs depends upon when you choose to expire an objt.
+ 
+s3 life cycle configuration - it is an XML file (not a json file)
+
+Q: how will you del large amount of data in any particular bucket in s3 ?
+using LCM not by slect all and press del
+
+MULTIPART UPLOADS
+
+configured using cli
+basically for uploading huge size files in less amount of time
+when uploading an obj in s3 s3 multipart upload will divide the data into small parts but inside a bucket the data
+is stored as it is. it will fasten the speed of uploading objts to s3
+
+>> supported transitions and related constraints(limitations) with LCM 
+
+lcm uses waterfall model of transtions.
+constraints >>
+-std
+-std IA
+-intelliegnt tiering
+-one zone IA
+-glacier instant RETRIEVAL
+-glacier FLEXIBLE RETRIVEL
+-deep arcive
+
+JPG FILE IS IN DESKTOP DOC
+
+REPLICATION
+
+if we want to replicate the objts btw two buckets in the same region or diff region or diff acc use replication.
+
+>> s3 batch operations
+it can perform actions across billions of objts and petabytes of data with a single request. to perform work you need to create a job
+the job conststs of the list of objects , the action to perfoem and and the set of parametrs u specify for that type of operation.
+
+
+4. CDN - CLOUD FRONT 
+
+-is a CDN Content delivery network
+-an edge loaction is created as small data centres to ftech data from a.z to increase latency
+acts as a cache memory where it stores the data
+maxx 365 dys cache is stored
+from india we need someting from north virg. then the speed will be low so to
+overcome this kinda issue edge loaction is placed btw og a.z and the client
+
+HOSTING A WEBSITE OR DOMAIN USING CDN
+
+ques: how can i make my website hosted inside an s3 bucket public withot enabling acl or access point policies
+
+1.untick block all puclic access
+2.using cdn we can get into s3 and host the domain
+3.get into s3 >> permissions >> block all public access >> no bucket policy
+4.and before that we have make a policy regarding get object to make all objects in the bucket public
+go to cloud front >> creste dist >> choose s3 bucket uploaded with the website template >> we can change the domain name >>
+there are 3 modes for origin access >> cloudfrnt origin access identity oai will generate a s3 bucket policy that allows public access to the s3 buckets through cloud frnt
+5.create oai >> yes updtae >> ssl certificates: for any website or app to make it secure we need to have an ssl certificatewe can use aws certificate manager to purchase
+aws certifictes right now no ssl then create.
+then copy the dist domain name and open the link.
+if it wont work then in def root object type index.html and save. 
+we can get the content delivery in a very short amoyunt of time and is much faster and efficient
+from diff edge loactions we get the response whereas in using s3 website hosting only we get the response fro  only one server from we are hosting.
+
+ 
+5. EC2 - ELASTIC COMPUTE CLOUD
+
+>> virual computer or server
+
+LAUNCHINGAN EC2:
+
+launch the inst>download the key>connect
+>> ssh -i Downloads\keyname.pem ec2-user@ip address
+ssh-secure shell
+port no : 22
+ec2 instance done.
+
+COPY:
+>> copy : copy files from root to ec2
+sudo su >> root >> super do switch user
+cp  <source> <dest>
+
+Overwriting of root with ec2 Using AUTHORIZED_KEYS
+
+we can login directly to root instead of sudo su by overwriting the autorized keys
+from ec2 wuth root then we can acess directly the root
+
+>> ssh -i Downloads\keyname.pem root@ip address
+done.
+
+SCP SECURE COPY
+
+>> scp -i Downloads\keyname.pem <source> <dest>
+but here the dest is----ec2@ip:\
+and the host is our pc root.
+ 
+UPLOADING A FILE FROM PC TO EC2
+
+C:\Users\advai>scp -i Downloads\insta1.pem C:\Users\advai\OneDrive\Desktop\amogh\abcd.txt ec2-user@13.114.144.236:\home\ec2-user\
+done.
+
+here instead of ec2 we can use root also
+>> scp - i Downloads\keyname.pem\ source name root@ip address:\
+ 
+DOWNLOADING A FILE FROM EC2 TO PC
+
+C:\Users\advai>scp -i Downloads\insta1.pem ec2-user@13.114.144.236:\home\ec2-user\abcd.txt C:\Users\advai\OneDrive\Desktop
+done.
+
+LAUNCHING AN INSTANCE USING CLI WITHOUT KEY PAIR
+
+We can directly lauuch from our own pc root in cli 
+by selecting the key pair and copy it in c drive/.ssh folder and rename it as id_rsa
+then we cn jst login w/o keypair
+as ~ ssh ec2-user@44.203.117.44
+
+ELASTIC IP
+
+public ips will change everytm  to prevent that create a permanent ip address which will always be uniqye.
+elastic ip>alloacte ip>permanent ip
+actions>assoaciate ip>select the instance we want
+
+CAT :
+To create file in ec2-----cat>filename
+to view the content-----cat filename
+save and exit----ctrl+c
+
+WEBSITE HOSTING INSIDE EC2 SERVER
+
+1.login ec2
+we have to install any web servcer for eg apache
+
+2.go to var---cd/var from root get into var
+apache package name of apache is--httpd
+command is--yum install packagename
+
+3.yum install httpd -y (y for confirming with yes)
+now to check get into var there will be a new directory called www
+
+systemctl status httpd : command for check ststus of package
+systemctl start httpd : to start the webserver
+now again check the status running
+
+4.get inside www >> cd/www
+there will be an html file 
+
+5.then we have to create html file inside html dir
+go inside html >> cd/html
+cat > index.html ----creating file then enter then type for the content we wanted
+<h1>for heading
+<h1>This is for testing purpose</h>
+ctrl + c --- to save
+done.
+
+mkdir >> to make directory 
+cd .. >> to step 2 times back
+inside new dir create a new html file and and access with ip/directoryname
+
+ELASTIC BLOCK STORAGE
+
+***BLOCK STORAGE
+snapshot--> backup of ebs volume to save files when smtng happnd to ec2 instnce
+backup copies of all files in th hard disk
+snapshots are incremental means adding by increase
+saved in s3 buckets of amazon
+an os can installed in ebs whwereas s3,efs no
+
+LAUNCH INSTANCE FROM TEMPLATE
+
+Launch templates enable you to store the parameters 
+(AMI, instance type, security groups, and key pairs etc.) 
+so that you do not need to define these parameters every time you launch a 
+new instance.
+key pair : which is in afile name .pem
+ami : amazon machine image
+ami : snapshot+os
+instance type : use ami to view files+os
+
+SECURITY GROUPS
+
+instances-secty grps-edit inbound rules 
+add http and https or we can add in the start 
+done.
+
+ATTATCHING BLOCK STORAGE
+
+elastic block stoarge > volumes > create vol > gen purpoe ssd gp2 > 20gb
+> select the same availa zone as ec2 instance > create vol actions
+> attatch vol > select the instance >dev name  /dev/xvdf > attach vol 
+done.
+
+then open ec2 go to root
+after attacthing run this commands
+
+1.lsblk : list block devices
+
+2.mkfs -t : make file sys and t stands for type of device
+mkfs -t <name of file system> </dev/xvdf>  (dev is device) 
+
+>> mkfs -t ext4 /dev/xvdf
+here xvda is tha root block and xvdf is the block we are attaching.
+ext4 is the type of file sys like fat32 we using here.
+
+3.make direc inside ebs >> myebs
+
+>> mkdir /home/ec2-user/myebs/
+whatever we cretre in direc the it will automatically save in harddisk i.e dev/xvdf...
+
+4.mount /dev/xvdf/ /home/ec2-user/myebs/
+check with lsblk
+
+after mounting check for the files
+to check files inside >> file -s /dev/xvdf 
+
+then get into direc myebs 
+crewte file in ebs vol
+>> touch file.txt
+file.txt created in myebs
+
+if you want detatch then we have to stop the insta first then del the vol
+and direc will be there but the content the txt file wil bwe missisng
+
+and whatver we create in ebs vol it will attach to the directory and if we create anither one the it
+will automaticakly go to new direc which we created after myebs veendm vere oru direc crete cheytu
+save aakum ennit nammal veendm mount cheyyumbo athil indam text file we creacted. we can again
+attatch vol by actions attcah the again check the direc is like a door in darddisk and wtever we create
+inside the ebs it will automatically get into it.
+
+here i created a txt file file.txt in myebs which i created and then i deatcatched the vol and again
+attache the vol and start the insta then inside the direc myebs, nothing file is missing and when i
+created a new direct called 'new' and mount it on the ebs >> mount /dev/xvdf /new/
+then the file.txt will appear in that new 'new' direc thats what ebs does its job acts like a door.
+done.
+  
+ATTATCHING PERMANENTLY EBS
+
+to mount perm we have to edit a file setting called fstab which is inside /etc folder.
+>> /etc/fstab
+there are 3 txt editors in linux vim,vi,nano
+and using one of these we have to edit fstab here we using vim
+get into ec2
+get into root
+get into fstab
+
+>> vim etc fstab --- then press enter
+then
+>> /dev/xvdf / 'direc we created' ext4 defaults,no fail 0 2
+
+no fail is to once mounting try the search for the file if not there then skip it
+always keep 0 no need to add memory
+after everrytng press esc from leaving from insert menu
+then save and quit >> :wq
+done.
+now the hd is perm mounted and
+to unmount >> umount /'direc name'/
+now to check use lsblk nothing will be there 
+
+if we stop and start the insta again then the vol we unmounted will be there because the vol
+we added perma is in the fstab the sys will reboot and search for the file in fstab 
+when we restarted that is the use of perm mounting in fstab.
+when we use lsblk it will be there.
+done.
+
+WINDOWS LAUNCH IN EC2
+
+launch the instance > select os windows > add keypair > connect the instance
+>rdp client > get passwrd > upld prvt key file > upload our .pem file > decrypt passwrd > copy the psswrd
+
+rdp-remote desktop protocol
+port no : 3389
+then download remote desp file
+type passwrd
+then ok
+then windows will enter.
+done.
+
+edit inbound rdp and source anywhere ipv4
+
+ACCESSING S3 FROM EC2
+IN ROUTE 53 SECTION.
+
+6. EFS - ELASTIC FILE SYSTEM
+
+***FILE STORAGE
+We have to create an instance
+add avail zone in subnet to set target to mount like us east 1a
+
+now ssh sec group is atttache to ec2 instae
+amd another sec grp is created for efs before creating efs
+nfs traffic sec group is created newly
+nfs is created to access the storage file sys from diff servers
+in ebs only from tht instance can access.
+
+nfs-network file sys
+port no : 2089
+
+>> create a sec grp for efs named efs > add inbound rule nfs with source instance sec group
+
+next open efs > customize > untick the auto nackup to reduce the costs
+>gen purpose is to work in common manner whwere as the
+max i/o is to design accordingly like in company
+
+create efs with crct avail zone with sec group efs sec group we created
+done.
+
+then attatch,copy it and paste in cmd after making a direc efs.
+done. 
+>> df -h to check whether mounted or not
+attach using dns or mount via ip
+
+7. RDS - RELATIONAL DATABASE SERVICE
+
+-databases ed to store data in a tabular format.it uses to store petabytes of data.
+-database engines/databes managemnt systems
+postgresql,mysql,sqlswrver,mariadb,oracle
+-if we want to access the database a language like sql is needed
+-rds is maintained by aws specifically for databse
+-if there is any updates in database the rds will done for us if we use rds
+-rds is a aws service which we manage databases > structured databases and non-strucured databases
+
+Lab : 
+Create database > standard create > select mysql engine > choose free tier
+> settings > db instance identifier > enter a name > enter username and password 
+> allocated strg 20 fro free tier > disable stoarage autoscaling > 
+> dont connect to an instance > in public access yes > in sec grp create new
+> a.z no preferance > db authen - password authen > add config > db options enter name 
+> disable backup and encry > create 
+done.
+
+TO ACCESS RDS WE NEED :
+-end point
+-port no : 3306
+-username
+-paassword
+
+CONNECT THE RDS TO INSTANCE
+
+MYSQL
+1.getinto instance in cmd
+2.sudo su into root
+3.install mysql server
+>> yum install mysql
+mysql installation will be done.
+if not work then
+>> yum install mariadb-server
+4.systemctl start mariadb
+in mysql it will automatically start.
+5.mysql -h (hostname or endpoint) -P portno:3306 -u username -p 
+press enter.
+6.Enter password : give pw
+mysql databse will open up.
+then use command >> show databeses ; to list the databases 
+done.
+
+here in rds our work is to create and give the username and pw to database experts.
+ps : if we coudnt access chech the rds sec grp the indound rule it shouldbe 
+mysql/aurora and source anywhere ipv4 (0.0.0.0).
+
+
+POSTGRE SQL : Port:5432
+same as mysql >> select postgresql >> password authen >> create new vpc sec grp >> in add confi port no : 5432
+create.
+
+install postgresql server >> yum install postgresql-server
+psql --host=(copy and paste the endpoint) --port=5432 --username=name of user --password (empty) --dbname=name of database //enter
+enter password
+psql --host=database-1.crlzhvj8eeug.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password --dbname=post
+123456789
+psql opens up
+done.
+
+command to list all databases >> select datname from pg_database;
+
+
+8. VPC - VIRTUAL PRIVATE CLOUD
+
+subnetting is needed
+use visual subnet calc site.
+create vpc >> vpc only
+192.168.0.0/24 >> if 251 hosts needed >> create
+done.
+
+next creating subnets >> subnets are created in a.z
+so name >> a.z
+ip 192.168.0.0/28 wtver e want
+
+using the site visul subnet calc we can add the slider range we want total 16 ntw are needed then for tht we use /28
+so here to access vpc router needs internet' so we need to create an internet gateway already 
+create internet gateway then atttach to vpc we created
+done.
+
+then we must have to add it to the route tables >> select the eroute table
+edit routes add route >> destination is internet and internet is alwyas 0.0.0.0
+target is int gateway which we attcahed >> save
+done.
+
+now vpc go int access. >> get into ec2 create instance >> create one >> in the netw settongs change the vpc and subnet we created
+and find a new sec grp for this then in summary add the total 11 we can access cuz  from /28 we can get a total of 16 hosts and frm 
+tht only 11 canwe use 2 broadcast 3 aws total 5 aws so only 11 ntw we get.
+a.z are not matter in creating another subnet to create anything like efs anor rds or wtver
+based on the slider given on vpc we will create subnet and give the slider block.
+now we create an subnet with 2 slider blks and attach explicit one subnet with new RT without igw
+-----------------------
+BASTION HOST:
+
+Accessing a single public ip and then using that accessing all the pvt ips inside it.
+tht main ip is called baston host.
+so now two ec2 created with two subnets one public and pvt
+and then 2 rt craeted one for public and second ecplicit for pvt
+in ubuntu apt is used instead of yum
+here using putty load ou-r ins.pem into ppk and save it
+then genearte in a priavte key and open up
+
+C:\Users\advai>scp -i C:\Users\advai\Downloads\ins2.pem C:\Users\advai\Downloads\key-pvt.pem ec2-user@3.239.213.14:\home\ec2-user\
+
+scp the private keypair inside the ec2user
+then ssh from public instance
+
+ssh -i key-pvt.pem ec2-user@10.0.187.203
+-------------------------
+USING UBUNTU
+first create instances using ubuntu then login using putty ssh >> auth browse and before that using putty gen load the public
+instance key pair and save as private key then in putty browse that file and open it.
+now we have to copy the key file from our pc to ubuntu server
+
+if anything will open up saying key is not accesible then use chmod 400 keyname
+****and use vim key to copy a key pair in ec2 or ubuntu inst 
+-------------------------
+NAT GATEWAYS
+
+Network address translation
+it will hde the pvt ip and use its elastic ip we creating to get data from internet in a secured manner
+
+1.ssh into the public instance
+2.get into pvt instane
+ssh -i keyname.pem ec2-user@ip
+keyname.pem is in home ec2user
+3.then yum update -y
+no internet so doesnt wrk
+then we have to atttcah nat gateway
+
+creating nat gateway >> creating in public and atttaching it to the pvt and we hav to allocate elastic ip yo that
+done.
+
+attach the NAT gw to the pvt rt with pvt subnet >> add route target nat gw
+done.
+nat is more secure than igw translating the og address to a new own address and they allocate a new elastic ip.
+--------------------------------------
+PEERING CONNECTIONS
+
+Vpc to vpc connection in same of diff regions
+it is always 1 to 1 - for every connection btw diff vpc's we need seprate peering connections
+--------------------------------------
+PROJECT : PEERING
+
+create one from ohio and another from virgina then in ohio rt has not igw then create a rds in ohio
+in public access no access only inside the vpc but we are tryng to access from another vpc
+another one we launch one public and private instance, public is to connect to pvt and using pvt we  access mysql databse from this vpc
+getinto pvt instance using public then install mysql and systemctl status mariadb then getinto rds sec group and edit inbounf rules then type mysql and source our pvt instance ip address
+it wont conncet when typed sql command
+so for this peering connection iw needed
+goto peering connection >> crate >> name >> req vpc >> my account >> another region >> vpc id acceptor
+create.
+done.
+in other region there will be pending acceptance >> actions >> accept req
+then we have to edit the route table destination will be the sleder range of the other vpc and we have to edit in both the rt ad change the destination
+target is slider range and the target is peering connection.
+successfully launched the db of ohion from virginia ec2 pvt instance
+done.
+mainly if there is an error check first rt,sec grps etc then edit inbound rules and everything
+in inbound source give the ip of the prvt ip from which we are trying to access
+-----------------------------------------
+TRANSIT GATEWAYS
+It acts like a hub where the vpc goes to that first and then to the destination vpc where it wants to go
+so need of so many connections and the vpc's can interconnect with themselves.
+
+Create vpc >> create two subnets >> create two ec2 >> one pvt one public ip enabled >> add sec grps ipv4 anywhr >> create.
+avoid touching default sec grps.
+create tgw 
+Asn nothing
+slider block someting diff
+create tgw attatchment with the 2nd vpc
+select the default vpc
+now check tgw rt evertuing ok
+now in rt >> edit routes >> add the other slider block 10.0.0.0 and target as tgw1
+now goto def rt edit routes add route add other slide rrange 172.31.0.0 and save tgw
+now getinnto ec2 >> ping the opvt sub
+if notr wrkng then goto sec grp check for anywhr ipv4
+then shh into pvt ec2
+no igw attached  with only tgw
+---------------------------------------
+PROJECT : TGW 
+IN NOTES
+Copy the file in region 1 pvt instance to region 2 pvt ec2
+---------------------------------------
+TRANSIT GW PEERING
+
+static route black hole blocking of specific ip address
+project today one region to anther region with transit gw conneted to both regions
+then from ovt 1 to pvt of another region usig transit peering
+---------------------------------------
+END POINTS:
+
+to acces the other services in aws without internet we use end points 
+the connection is going thrh internet but it is the internet provided by aws
+gw endpints can only possible for s3 and dynamo db
+create vpc >> select endpoint >> select gw >> select the vpc we want to connect >> full access >> create.
+now ssh into the nstance
+now modify iam role
+get aws s3 list
+nw to check whether internet is used or not
+we have to create a pvt subnet and rt then make a pvt ec2
+select end ponits > manage rt >> add the pvt rt
+then ssh int pvt attach the role and get the aws s3
+but here we using gateway connection so we have to specify the region
+aws s3 list --region us-east-2
+when we using interface endpoint we havto give the endpint url of inerface.
+
+//creating interface endpoint
+select the subnet we want to conncet >> pvt subnet
+aws s3 ls --region us-east-2 --endpoint-url https://bucket.(copy the dns address from nterface endpoint)
+now goto sec grp of endpoint inb rules edit add rule https connection and if we use http the only http is needed
+
+vpc reachability analyzer >> attatch with source itance and dest end point 
+to monitor the path
+--------------------------------------
+VPN
+
+to connect frm  aws cloud to our company with secure connection.
+
+we will create a virtual pvt gateway
+site to site connection
+we are creating one in aws side
+and one in on-premise
+aws side crewte vpc subnet and public instance
+and on premise side two instance one for server and open swan instance and we will convert into custimer gateway
+creste one vpc create one subnet for swan
+another vpc subnet for server 
+then add rt for server subnet explicitly add one
+open swan >> sub public >> rt with igw
+server >> sub pvt >> rt no igw
+separate sec grp for both
+
+on aws side >> vpn >> customer gw >> craete >> copy the ip add of openswan create din on premise side
+done,
+goto virtual pvt gateway >> create  
+done.
+vpgw >> atctions >> attatch it tp the vpc
+now goto site to site >> target  vpgw >> customer gw >> routing statis >> dd static prefixes of both on premise and aws 10.0.0.0/16 amd 30.0.0.0/16 
+add local first on premise loacl and then aws
+done.
+in aws side goto rt >> route propagation >> enable
+now goto site to site download the config
+and send it to the on premise.
+
+goto on prmise ssh into open swan(public ip)
+on premise instance of openswan >> actions >> netwrking >> change dest check >> stop.
+to stop the checking of ip coming and going
+sudo su
+yum install openswan -y
+
+1. open up the config file that we downloaded
+then in tunnel 1st step copy /etc/........conf
+then vim paste the comand
+now in that copy the 3 net commands form diownloaded
+and paste in that vim window
+before that del the #
+then paste and enter :wq enter
+done.
+2. then system ctl start or service network start
+3. go to downloaded 3rd step copy the link /etc.....conf
+vim link
+now check for there is no #
+now save and exit done.
+4. now in conn tunnel we hqve to clewr auth=esp
+now in local ntw add local >> left subnet = local slider range >> right subnet = aws slider range
+now in 4th step copy the link /etc/ipsec.d/aws.conf 
+vim /etc/ipsec.d/aws.conf
+now copy evertung conn tunnel patse and enter
+:wq done.
+5. vim /etc/ipsec.d/aws.secrets 5th one
+then copy teh kast line form ip to full 3.145.75.46 34.195.134.240: PSK "qhz7PSDo86mr.ZLjs4qlG_3lo0YPztkg" 
+then save and exit 
+done.
+systemctl start ipsec >> if everyting ok then nothing will shown.
+systemctl status ipsec >> for chech the status.
+then in aws side check for tunnel status
+by this way with no internet no peering no tgw we can ping from one region pvt to another.
+
+to ping from ohio pvt to another pvt then we have to edit the roue and dest as ip of that pvt and target is instance openswan from we want to connect.
+---------------------------------
+AUTO SCALING
+
+Amazon EC2 Auto Scaling helps you ensure that you have the correct number of Amazon EC2 instances available to handle the load for your application. You create collections of EC2 instances, called Auto Scaling groups.
+launch templates >>
+whenever we are trying to write anythig in linux wr have to use the >> shebang script #!
+so in user data >>  #!/bin/bash
+		         sudo apt install httpd -y
+		         service httpd start 
+create launch template.
+for auto scaling we need a pre inquisite thta is launch template
+now go to auto scaling grps >> create >> name >> select the temp we created
+same vpc >> same >> a.z
+health check 20sec >> next
+desired >> how many instances should launch when we ativate the autoscale
+we give 3 
+min 2
+max 1
+scaling policy name >> target traffic policy
+cpu utilization >> avg cpu
+target value 70 >> next 
+laumch
+if we terminate one instance automatically other instance will run
+------------------------------------
+LOAD BALANCER
+
+here we need pre inquisite target grps
+ec2 >> vpc >> subnets >> instances
+target grps >> create >> health check give the path of webserver
+healthy threshhold how many times to check whtehr the targert is haelth or not
+success code is the value where we know we succeed or not when that number appears
+-----------------
+goto LB
+Application LB
+scheme >> where we make our lb public or pvt
+select the vpc
+same like rds lb also need two subnets
+so we create 2 subnet in 2 a.z
+application lb only accepts http and https >> so we use prt 80 http
+no ssh can use cuz ld doesnt have an os
+withot an os we cant get with ssh
+instanc should have http sec grp rule
+in user data
+#!/bin/bash
+sudo yum install httpd -y
+service.................
+echo "this is my address $(hostname) > /var/www/.html"
+goto target grps select reg targets
+goto lb >> dns name copy and paste as url
+then keeps on refresh then the instances we gave pvt ips of them will keep repeat
+with cloudwatch and sns we can get notification if anyne gets unhealthy
+
+
+9. CLOUDWATCH
+
+in instance there is monitoring 
+cloudwwtach >> alaram >> select metric >> selec the instance >>select the cpu utilization
+threshhold means the time when the alarm wants to trigger
+we will give the value  and give the mail we eants to send the alarm
+dd - cmnd to increas the cpu utilization
+if thrshhold increase the limit the instance will autom atically stop or terminate and if we need we cann add autoscaling. 
+inst will stop and a noti mail will come.
+period 1 min
+value as 0.25
+confirm the response from your mail id
+
+USING CLOUDWATCH AGENT
+
+*Install Cloudwatch Agent >> yum install amazon-cloudwatch-agent -y
+to start >> Start the service*sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a stopsudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a start
+*Config wizard*sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizazrd
+in options
+1
+1
+1
+no
+no
+yes
+no
+no
+no
+60s
+1
+yes
+no
+no
+yes
+
+now we wamt to attcath a policy for sysyetems manager 
+attach a role with the policy cloudwatchsysmanager
+we atttach the reole so they automatically get the access key
+now after giving access key amd secret key then done.
+goto cloudwatch metrics there will b3 the attcahed 
+add to dashboard create dashboard
+monitoring tools is always 3rd party cuz it is not pefect it ios not best tool available.
+
+
+10. AMAZON RESOURCE ALLOCATOR
+
+It is a simple servie to view aws resources in all regions that we are using or in active state.
+
+11. ROUTE53
+
+what is route 53?
+route 53 is webservice provided by aws, it is highly scalable and highly available dns service from amazon.
+by using route 53 can do the following action:
+- dns management`
+- domain registration
+- traffic management
+- website health checking
+
+what is public hosted zone and private hosted zone
+public hosted zone can connect from any network cause it publicly exposed, and it will be have unique ip address
+private hosted zone only can connect from internal network, can use same domain in diffrent organazization
+
+what is hosted zone?
+hosted zone its component of route, where we can host our domain and can create different records for domain
+
+why route 53 call it as route53?
+basically dns port is known as 53 thats what aws calling this aws dns service as route 53 
+
+types of record 
+A - use for ipv4
+AAAA - ipv6
+ns - name server
+soa - start of authority
+cname - canonicak name or subdomain
+mx - mail exchnage server info
+txt - used for domain verification
+ptr - ip address to domain (forward and reverse)
+srv - service record, comprises, hostname location, domanin info
+
+is it possible to transfer domain name from third party vendor to aws?
+yes we can
+
+domain quotas?
+20 domains per account, can enhance
+maximum 6 name server per domain
+
+whos managing domain name?
+ICANN -> internet corporation for assigned number and names (they managing internet ip and domain)
+
+how does dns works?
+fir it will check local system > it will go to isp dns resolver > then it will goto root dns server > then it will goto TLD > finally it will goto route53 > 
+finally system will fetch ip address of application from route 53 > at last system will try to access actual website
+
+what is ttl?
+amount of time cache the information on local browser
+use nslookup domain to find ttl
+
+what is maximum and minumum ttl time
+60 sec to 48 hours
+
+how to integrate domain name with s3 bucket?
+
+types of routing policy?
+
+simple - one domain with 1 ip address
+multivalue - can have multiple ip for one domain, i tw ill select random vm when user hitting domain
+weighted - we can impose weight for virtual machine/ip, it will consider weight when user requesting for content, for highest weight vm will get
+most of the request from user, lowest weight vm will get less request.
+failover - as the name says, it usign for fault taulerance or standby server, all resuest will goto primary server, if primary goes down
+request will be distort/route to secondary
+geolocation - it will send the traffic based user location, if user resides india traffic will goto india server.
+latency based routing - it will determine less latency and it route to ideal server.
+ip based - based upon source it will detrmine allow or deny, we can custom rule
+
+what is alias?
+its a component of route 53, used to take aws service endpoints source such as, load balancer, s3 bucket, elastic beanstalk, cloud front and api gateways
+
+
+what is dns firewall
+by using dn sfirewall we can regulate vpc outbound traffic
+
+can i restrict specific country from accessing my application, by using route 53?
+---------------------------------------------------------------------------------
+can use geo location routing policy
+
+how to create global load balancer using route 53
+-------------------------------------------------
+can give 50 weight for each endpoint
+
+what are the deafult records?
+soa
+ns 
+
+what are the four name server types?
+.com
+.org
+.co.uk
+.net
+
+smaple userdata
+---------------
+#!/bin/bash
+sudo yum install httpd -y
+sudo systemctl start httpd.service
+echo "<h1>SERVER-1</h1>" > /var/www/html/index.html 
+
+DNS - domain name sys 
+converting the domain name to the ip address
+www.google.com
+www >> sub domain
+google >> root domain
+.com >> top level domain
+dns resolver - isp's decoding the dns
+
+Website creating in ROUTE53
+create hostzone
+then login freenom 
+settings chnage server then paste the record names from route 53 in freenom domain managing tool
+
+ACCESSING S3 FROM EC2
+
+Select the instance then actions sec modify iam role
+create a role with s3 full access and attach it to the ec2
+getinto ec2 cli
+use command aws s3 list
+
+hosting a website in s3 and map into route 53
+so for this we want to give exact name of bucket to dns name 
+amogh.tk and amogh.tk
+then from ec2-user we create one file and upload from our ec2
+use command aws s3 cp index.html s3://farhanbsoft.tk
+aws s3 cp source dest
+now enable staic host
+then copy link nd check
+now open route 53
+create record
+give the sam name a sbucket name as record name
+now select alias then select s3
+create record then thsat link changes to farhanbsoft.tk shoowing the contents of index.html
+
+PROJECT :
+created a s3 bucket with same name as route53 hosted zone
+then uplod my amoghaws.txt
+then reanme it as index.html
+then atttach s3 with ec2 then then amoghbsoft.tk
+all notes can be viewd.
+if a pic is adding in s3 then it can also viewd by renaming the obj as index.html
+
+
+12. CLOUDTRAIL
+
+API - any kind of request btw two applictaions or service we call it as api
+for eg if any website calls google means that website s using api to call google
+everyting you do in your account it mens an api call is happenig in the middle.
+
+1.create a trail
+2.and the bucket we created will have evry log in that.
+an s3 bucket will automatically create by ct to store the logs.
+3.in s3 the log file will be there and we can watch every log files.
+
+13. SNS - SIMPLE NOTIFICATION SERVICE 
+
+wghere you can send messages like sms or mails to users
+craete topic >> give name >> encrypt measn durig the transmit the msg will be encrypted
+create subscription >> protocol >> sms >> give the phone num >> selct the txt msgng 
+eneter the msg body >> and publish the txt msg.
+
+14. SQS - SIMPLE QUEUE SERVICE
+
+queing service used for sending bulk notifivcation to the users in queue
+sns app is the one sndng the messages in this too.
+
+15. SES - SIMPLE EMAIL SERVICE
+sending sms in via emails to users
+
+project on vpc
+
+vpc create one slider give 20.0.0.0/16
+create.
+craete igw.
+attach it
+give 2 subnets
+one pub and one pvt 20.0.0.0/25 and 20.0.128.2/26
+in diff a.z
+create domne.
+
+create rt and explicit add the rt
+crt nat gw crate done.
+goto rt gorto pvt rt edit routes add route 0.0. and nat
+done.
+
+launch template.
+launch in pvt subnet
+add sec grp rule add http or all traffic 
+add user data
+
+#!/bin/bash
+sudo yum install httpd -y
+sudo systemctl start httpd
+echo "thei sthe qebsite we want to kaubch $
+lauch.
+
+create auto scaling groups
+select the launch template.
+give vpc and pvt subnet
+if we want we can add notfictaion also
+
+goto lb
+select the target grp craete tg instances
+application lb
+using public subnet
+add another subnet for lb in another a.z
+20.0.0.192/26
+now goto lb it have everything all 3 subntes in 3 a.z
+copy the lb link and open the url
+will have it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

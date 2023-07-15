@@ -1,0 +1,62 @@
+terraform init
+terraform plan
+terraform apply
+terraform apply --auto-approve
+setx AWS_SECRET_ACCESS_KEY give secret access key
+to save the access key in secure way
+we can use withoout adding seccess key and s scccess key in provider
+
+key pair
+resourse "tls_private_key" "key1"
+algoruthm=rsm
+rsa_bits=4096
+
+resource"aws_key_pair" "pubkey"
+key_name = "tf-key-virginia"
+public_key = tls_ptribate_key.key1...............
+
+saving key
+resource "localfile" "locAL KEY"
+CONTENT = tls.private;.private.pem
+filename = "tf-key-virginia"
+
+vpc
+resource "aws_vpc" "main" {
+  cidr_block       = "10.0.0.0/16"
+  instance_tenancy = "default"
+
+  tags = {
+    Name = "main"
+
+resource "aws_subnet" "main" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "Main"
+  }
+}
+
+sec grp
+resourse "aws_sec_grp" "tf-gs"{
+name = name
+description = give
+vpc_id = vpc id
+}
+
+ingress{
+descp=
+from port=
+to port=
+protocil=
+cidr blocks=[source]
+}
+
+engress{
+desc=
+from port=
+to port=
+protocol=-1 -1 is to sloecet all trafic protocols
+}
+
+to add sec grp go to instance code aand add vpc_security_group_ids =[aws_sec_grp.sec name we given]
