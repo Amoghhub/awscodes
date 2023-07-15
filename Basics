@@ -1,0 +1,3 @@
+aws configure
+aws-create-accesskey
+aws-iam-create-user
